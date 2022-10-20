@@ -6,6 +6,7 @@ const app = express();
 const dialogflow = require('dialogflow');
 const chatbot = require('./chatbot/chatbot')
 const token = "EAALjc2bbXNwBADk0vzSwzdbCxFhG2ahV9XcGZCEVO0xDzQVS4lUmois27ZAkucBqU0hNEsGL02Cw5nD1iEJ1vfZC02k3LXTT4WCigFuo0rTaKJc3FbCNcBOR9LE76TKJIh6DYGcjhVyWARs9JoancmSEUiJBpsuu1daA4njM8FU8yWYB07pqhbZA3MawAV7FThDiBNOx8ygaStA9xe5j";
+axios = require("axios").default,
 
 
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -27,13 +28,11 @@ app.post('/chat', async (req, res) => {
 })
 
 app.post("/webhook", (req, res) => {
-  // Parse the request body from the POST
+  console.log("inside webhook")
   let body = req.body;
 
-  // Check the Incoming webhook message
   console.log(JSON.stringify(req.body, null, 2));
 
-  // info on WhatsApp text message payload: https://developers.facebook.com/docs/whatsapp/cloud-api/webhooks/payload-examples#text-messages
   if (req.body.object) {
     if (
       req.body.entry &&
@@ -47,7 +46,7 @@ app.post("/webhook", (req, res) => {
       let from = req.body.entry[0].changes[0].value.messages[0].from; // extract the phone number from the webhook payload
       let msg_body = req.body.entry[0].changes[0].value.messages[0].text.body; // extract the message text from the webhook payload
       axios({
-        method: "POST", // Required, HTTP method, a string, e.g. POST, GET
+        method: "POST", 
         url:
           "https://graph.facebook.com/v12.0/" +
           phone_number_id +
@@ -63,7 +62,6 @@ app.post("/webhook", (req, res) => {
     }
     res.sendStatus(200);
   } else {
-    // Return a '404 Not Found' if event is not from a WhatsApp API
     res.sendStatus(404);
   }
 });
