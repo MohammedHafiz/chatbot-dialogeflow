@@ -28,10 +28,10 @@ app.post('/chat', async (req, res) => {
 })
 
 app.post("/webhook", async(req, res) => {
-  console.log("inside webhook")
+  console.log("inside webhook!!!!!!!!!!!!!!!!!!!!!!!!!")
   let body = req.body;
 
-  console.log(JSON.stringify(body, null, 2));
+  console.log("req.body####################################",JSON.stringify(body, null, 2));
 
   if (req.body.object) {
     if (
