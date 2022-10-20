@@ -6,7 +6,7 @@ const app = express();
 const dialogflow = require('dialogflow');
 const chatbot = require('./chatbot/chatbot')
 const token = "EAALjc2bbXNwBADk0vzSwzdbCxFhG2ahV9XcGZCEVO0xDzQVS4lUmois27ZAkucBqU0hNEsGL02Cw5nD1iEJ1vfZC02k3LXTT4WCigFuo0rTaKJc3FbCNcBOR9LE76TKJIh6DYGcjhVyWARs9JoancmSEUiJBpsuu1daA4njM8FU8yWYB07pqhbZA3MawAV7FThDiBNOx8ygaStA9xe5j";
-axios = require("axios").default,
+const axios = require("axios").default;
 
 
 app.use(bodyParser.urlencoded({ extended: false }));
