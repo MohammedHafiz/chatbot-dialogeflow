@@ -47,7 +47,7 @@ app.post("/webhook", async(req, res) => {
       let msg_body = req.body.entry[0].changes[0].value.messages[0].text.body;
      
 
-      const resultQuery = await chatbot.textQuery(text, from);
+      const resultQuery = await chatbot.textQuery(msg_body, from);
       console.log('message : cd ', resultQuery.fulfillmentText)
 
       
