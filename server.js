@@ -31,7 +31,7 @@ app.post("/webhook", async(req, res) => {
   console.log("inside webhook")
   let body = req.body;
 
-  console.log(JSON.stringify(req.body, null, 2));
+  console.log(JSON.stringify(body, null, 2));
 
   if (req.body.object) {
     if (
