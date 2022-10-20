@@ -23,7 +23,7 @@ app.get('/chat', (req, res) => {
 app.post('/chat', async (req, res) => {
   const { text, userId } = req.body;
   const resultQuery = await chatbot.textQuery(text, userId);
-  console.log('message : cd ', resultQuery.fulfillmentText)
+  console.log('message : ', resultQuery.fulfillmentText)
   res.status(200).json({ success: true, message: resultQuery.fulfillmentText })
 })
 
@@ -48,7 +48,7 @@ app.post("/webhook", async(req, res) => {
      
 
       const resultQuery = await chatbot.textQuery(msg_body, from);
-      console.log('message :', resultQuery.fulfillmentText)
+      console.log('message :::::::::::::::::::::::', resultQuery.fulfillmentText)
 
       
       axios({
