@@ -5,7 +5,7 @@ const cors = require("cors");
 const app = express();
 const dialogflow = require('dialogflow');
 const chatbot = require('./chatbot/chatbot')
-const token = "EAALjc2bbXNwBABLZBSy8E8HmbsJ3HvJqFxfmERAEAR3TZAzfKMVFO35KlgnQcG3BZCm2YMf78ovEh3L84gomsIanhY3yMW0IvZAMfft0yiaJ5PUSEQQNVrNQgAcb8cWew1XCyMoF0OPa0buNGhUGG7dby1rheUOH2qN6R9yqKYJWbshXauHisp8OkgaF8zeZBiAOgTdTdSRVzpachWKEB";
+const token = "EAALjc2bbXNwBADk0vzSwzdbCxFhG2ahV9XcGZCEVO0xDzQVS4lUmois27ZAkucBqU0hNEsGL02Cw5nD1iEJ1vfZC02k3LXTT4WCigFuo0rTaKJc3FbCNcBOR9LE76TKJIh6DYGcjhVyWARs9JoancmSEUiJBpsuu1daA4njM8FU8yWYB07pqhbZA3MawAV7FThDiBNOx8ygaStA9xe5j";
 
 
 app.use(bodyParser.urlencoded({ extended: false }));
