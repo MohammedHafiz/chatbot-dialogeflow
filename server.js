@@ -27,50 +27,68 @@ app.post('/chat', async (req, res) => {
   res.status(200).json({ success: true, message: resultQuery.fulfillmentText })
 })
 
-app.post("/webhook", async(req, res) => {
-  console.log("inside webhook!!!!!!!!!!!!!!!!!!!!!!!!!")
-  let body = req.body;
+// app.post("/webhook", async (req, res) => {
+//   console.log("inside webhook!!!!!!!!!!!!!!!!!!!!!!!!!")
+//   let body = req.body;
 
-  console.log("req.body####################################",JSON.stringify(body, null, 2));
+//   console.log("req.body####################################", JSON.stringify(body, null, 2));
 
-  if (req.body.object) {
-    if (
-      req.body.entry &&
-      req.body.entry[0].changes &&
-      req.body.entry[0].changes[0] &&
-      req.body.entry[0].changes[0].value.messages &&
-      req.body.entry[0].changes[0].value.messages[0]
-    ) {
-      let phone_number_id =
-        req.body.entry[0].changes[0].value.metadata.phone_number_id;
-      let from = req.body.entry[0].changes[0].value.messages[0].from; // extract the phone number from the webhook payload
-      let msg_body = req.body.entry[0].changes[0].value.messages[0].text.body;
-     
+//   if (req.body.object) {
+//     if (
+//       req.body.entry &&
+//       req.body.entry[0].changes &&
+//       req.body.entry[0].changes[0] &&
+//       req.body.entry[0].changes[0].value.messages &&
+//       req.body.entry[0].changes[0].value.messages[0]
+//     ) {
+//       let phone_number_id =
+//         req.body.entry[0].changes[0].value.metadata.phone_number_id;
+//       let from = req.body.entry[0].changes[0].value.messages[0].from; // extract the phone number from the webhook payload
+//       let msg_body = req.body.entry[0].changes[0].value.messages[0].text.body;
+//       let msg_type = req.body.entry[0].changes[0].value.messages[0].type;
 
-      const resultQuery = await chatbot.textQuery(msg_body, from);
-      console.log('message ::::::::::::::::::::::', resultQuery.fulfillmentText)
+//       switch (msg_type) {
+//         case "text":
+//           const resultQuery = await chatbot.textQuery(msg_body, from);
+//           console.log('message ::::::::::::::::::::::', resultQuery.fulfillmentText)
 
-      
-      axios({
-        method: "POST", 
-        url:
-          "https://graph.facebook.com/v12.0/" +
-          phone_number_id +
-          "/messages?access_token=" +
-          token,
-        data: {
-          messaging_product: "whatsapp",
-          to: from,
-          text: { body: resultQuery.fulfillmentText },
-        },
-        headers: { "Content-Type": "application/json" },
-      });
-    }
-    res.sendStatus(200);
-  } else {
-    res.sendStatus(404);
-  }
-});
+
+//           axios({
+//             method: "POST",
+//             url:
+//               "https://graph.facebook.com/v12.0/" +
+//               phone_number_id +
+//               "/messages?access_token=" +
+//               token,
+//             data: {
+//               messaging_product: "whatsapp",
+//               to: from,
+//               text: { body: resultQuery.fulfillmentText },
+//             },
+//             headers: { "Content-Type": "application/json" },
+//           });
+
+//           break;
+//           case "interactive":
+//               if(req.body.entry[0].changes[0].value.messages[0].interactive.list_reply) {
+//                   msg_body = req.body.entry[0].changes[0].value.messages[0].interactive.list_reply.title
+//                   reply_id = req.body.entry[0].changes[0].value.messages[0].interactive.list_reply.id
+//               } else {
+//                   msg_body = req.body.entry[0].changes[0].value.messages[0].interactive.button_reply.title
+//                   reply_id = req.body.entry[0].changes[0].value.messages[0].interactive.button_reply.id
+//               } 
+//       }
+//       const latitude = req.body.entry[0].changes[0].value.messages[0].location.latitude
+//       const longitude = req.body.entry[0].changes[0].value.messages[0].location.longitude
+
+
+
+//     }
+//     res.sendStatus(200);
+//   } else {
+//     res.sendStatus(404);
+//   }
+// });
 
 
 app.get("/webhook", (req, res) => {
