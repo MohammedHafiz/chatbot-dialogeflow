@@ -48,7 +48,7 @@ app.post("/webhook", async(req, res) => {
      
 
       const resultQuery = await chatbot.textQuery(msg_body, from);
-      console.log('message :::::::::::::::::::::::', resultQuery.fulfillmentText)
+      console.log('message ::::::::::::::::::::::', resultQuery.fulfillmentText)
 
       
       axios({
