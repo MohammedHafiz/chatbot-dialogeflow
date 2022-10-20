@@ -27,7 +27,7 @@ app.post('/chat', async (req, res) => {
   res.status(200).json({ success: true, message: resultQuery.fulfillmentText })
 })
 
-app.post("/webhook", (req, res) => {
+app.post("/webhook", async(req, res) => {
   console.log("inside webhook")
   let body = req.body;
 
@@ -44,7 +44,13 @@ app.post("/webhook", (req, res) => {
       let phone_number_id =
         req.body.entry[0].changes[0].value.metadata.phone_number_id;
       let from = req.body.entry[0].changes[0].value.messages[0].from; // extract the phone number from the webhook payload
-      let msg_body = req.body.entry[0].changes[0].value.messages[0].text.body; // extract the message text from the webhook payload
+      let msg_body = req.body.entry[0].changes[0].value.messages[0].text.body;
+     
+
+      const resultQuery = await chatbot.textQuery(text, from);
+      console.log('message : cd ', resultQuery.fulfillmentText)
+
+      
       axios({
         method: "POST", 
         url:
@@ -55,7 +61,7 @@ app.post("/webhook", (req, res) => {
         data: {
           messaging_product: "whatsapp",
           to: from,
-          text: { body: "Ack: " + msg_body },
+          text: { body: resultQuery.fulfillmentText },
         },
         headers: { "Content-Type": "application/json" },
       });
