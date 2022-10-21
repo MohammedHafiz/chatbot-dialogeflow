@@ -218,6 +218,7 @@ app.post("/webhook", async (req, res) => {
             lon2 = parseInt(lon2) * Math.PI / 180;
             lat1 = parseInt(lat1) * Math.PI / 180;
             lat2 = parseInt(lat2) * Math.PI / 180;
+
             console.log("lat1: " + lat1 + " lon1: " + lon1)
             console.log("lat2: " + lat2 + " lon2: " + lon2)
             // Haversine formula
@@ -232,7 +233,7 @@ app.post("/webhook", async (req, res) => {
             console.log("c", c)
 
             // Radius of earth in kilometers.Use 3956
-            // for miles
+            // for mile
             let r = 6371;
             const result = c * r
             // calculate the result
