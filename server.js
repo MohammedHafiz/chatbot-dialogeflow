@@ -206,8 +206,7 @@ app.post("/webhook", async (req, res) => {
           const lon1 = 76.31635282478837 
           const lat2 = 9.98688211319266;
           const lon2 = 76.31682833077215;
-
-
+         
 
           function distance(lat1,lat2, lon1, lon2) {
 
@@ -237,7 +236,8 @@ app.post("/webhook", async (req, res) => {
             return (c * r);
           }
 
-
+          const distanceFunctionCall = await distance()
+          console.log("distanceFunctionCall", distanceFunctionCall)
           SendTextMessage(from, phone_number_id, result)
 
 
