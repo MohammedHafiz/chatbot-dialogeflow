@@ -178,10 +178,10 @@ app.post("/webhook", async (req, res) => {
           //   
 
           function distance() {
-            let lat1 = 10.112092428012724
-            let lon1 = 76.3523477247899 
-            let lat2 = 9.984466855381317
-            let lon2 = 76.3121483517723
+            let lat1 = 53.32055555555556
+            let lon1 = -1.7297222222222221 
+            let lat2 = 53.31861111111111
+            let lon2 = -1.6997222222222223
              
 
             // The math module contains a function
