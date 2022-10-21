@@ -65,6 +65,34 @@ const SendListMessage = async (to, phone_number_id, body, rows) => {
   }
 }
 
+const SendButtonMessage = async (to, phone_number_id, body, buttonContent) => {
+  try {
+      await axios({
+          method: "POST",
+          url: "https://graph.facebook.com/v12.0/" + phone_number_id + "/messages?access_token=" + token,
+          data: {
+              "messaging_product": "whatsapp",
+              "recipient_type": "individual",
+              "to": to,
+              "type": "interactive",
+              "interactive": {
+                  "type": "button",
+                  "body": {
+                      "text": body
+                  },
+                  "action": {
+                      "buttons": buttonContent
+                  }
+              }
+          },
+          headers: {
+              "Content-Type": "application/json"
+          },
+      });
+  } catch (e) {
+      console.error("SendButtonMessage Error", e)
+  }
+}
 
 
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -110,16 +138,33 @@ app.post("/webhook", async (req, res) => {
           resultQuery = await chatbot.textQuery(msg_body, from);
           console.log('message ::::::::::::::::::::::', resultQuery.fulfillmentText)
           // SendTextMessage(from, phone_number_id, resultQuery.fulfillmentText)
-          SendListMessage(from, phone_number_id, "This is a list demo",
-            [{
-              id: "1",
-              title: "yes"
-            },
-            {
-              id: "2",
-              title: "no"
-            }]
-          )
+          // SendListMessage(from, phone_number_id, "This is a list demo",
+          //   [{
+          //     id: "1",
+          //     title: "yes"
+          //   },
+          //   {
+          //     id: "2",
+          //     title: "no"
+          //   }]
+          // )
+
+          SendButtonMessage(from, phone_number_id, 'Kindly submit.',
+          [{
+              "type": "reply",
+              "reply": {
+                  "id": "4.1",
+                  "title": "YES"
+              }
+          },
+          {
+              "type": "reply",
+              "reply": {
+                  "id": "4.2",
+                  "title": "NO"
+              }
+          }]
+      )
 
           break;
         case "interactive":
@@ -130,14 +175,14 @@ app.post("/webhook", async (req, res) => {
           }
           resultQuery = await chatbot.textQuery(msg_body, from);
           console.log('message ::::::::::::::::::::::', resultQuery.fulfillmentText)
-          SendListMessage(phone_number, phone_number_id, "This is a list demo",
+          SendListMessage(from, phone_number_id, "This is a list demo",
             [{
               id: "1",
-              title: resultQuery.fulfillmentText
+              title: "test 1"
             },
             {
               id: "2",
-              title: resultQuery.fulfillmentText
+              title: "test 2"
             }]
           )
           break;
