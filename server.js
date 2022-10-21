@@ -202,13 +202,14 @@ app.post("/webhook", async (req, res) => {
         case "location":
           // const lat1 = req.body.entry[0].changes[0].value.messages[0].location.latitude
           // const long1 = req.body.entry[0].changes[0].value.messages[0].location.longitude
-          const lat1 =  9.989914657534852
-          const lon1 = 76.31635282478837 
-          const lat2 = 9.98688211319266;
-          const lon2 = 76.31682833077215;
-         
 
-          function distance(lat1,lat2, lon1, lon2) {
+
+
+          function distance(lat1, lat2, lon1, lon2) {
+            const lat1 = 9.989914657534852
+            const lon1 = 76.31635282478837
+            const lat2 = 9.98688211319266;
+            const lon2 = 76.31682833077215;
 
             // The math module contains a function
             // named toRadians which converts from
@@ -217,17 +218,18 @@ app.post("/webhook", async (req, res) => {
             lon2 = parseInt(lon2) * Math.PI / 180;
             lat1 = parseInt(lat1) * Math.PI / 180;
             lat2 = parseInt(lat2) * Math.PI / 180;
-
+            console.log("lat1: " + lat1 + " lon1: " + lon1)
+            console.log("lat2: " + lat2 + " lon2: " + lon2)
             // Haversine formula
             let dlon = parseInt(lon2) - parseInt(lon1);
             let dlat = parseInt(lat2) - parseInt(lat1);
             let a = Math.pow(Math.sin(dlat / 2), 2)
               + Math.cos(lat1) * Math.cos(lat2)
               * Math.pow(Math.sin(dlon / 2), 2);
-              console.log("a",a)
+            console.log("a", a)
 
             let c = 2 * Math.asin(Math.sqrt(a));
-            console.log("c",c)
+            console.log("c", c)
 
             // Radius of earth in kilometers.Use 3956
             // for miles
