@@ -29,7 +29,7 @@ const SendTextMessage = async (to, phone_number_id, body) => {
 }
 
 const SendListMessage = async (to, phone_number_id, body, rows) => {
-  console.log("inside list message function",to, phone_number_id, body, rows);
+  console.log("inside list message function", to, phone_number_id, body, rows);
   try {
     await axios({
       method: "POST",
@@ -67,57 +67,57 @@ const SendListMessage = async (to, phone_number_id, body, rows) => {
 
 const SendButtonMessage = async (to, phone_number_id, body, buttonContent) => {
   try {
-      await axios({
-          method: "POST",
-          url: "https://graph.facebook.com/v12.0/" + phone_number_id + "/messages?access_token=" + token,
-          data: {
-              "messaging_product": "whatsapp",
-              "recipient_type": "individual",
-              "to": to,
-              "type": "interactive",
-              "interactive": {
-                  "type": "button",
-                  "body": {
-                      "text": body
-                  },
-                  "action": {
-                      "buttons": buttonContent
-                  }
-              }
+    await axios({
+      method: "POST",
+      url: "https://graph.facebook.com/v12.0/" + phone_number_id + "/messages?access_token=" + token,
+      data: {
+        "messaging_product": "whatsapp",
+        "recipient_type": "individual",
+        "to": to,
+        "type": "interactive",
+        "interactive": {
+          "type": "button",
+          "body": {
+            "text": body
           },
-          headers: {
-              "Content-Type": "application/json"
-          },
-      });
+          "action": {
+            "buttons": buttonContent
+          }
+        }
+      },
+      headers: {
+        "Content-Type": "application/json"
+      },
+    });
   } catch (e) {
-      console.error("SendButtonMessage Error", e)
+    console.error("SendButtonMessage Error", e)
   }
 }
 
 
 const SendTemplateMessage = async (to, phone_number_id) => {
   try {
-      await axios({
-          method: "POST",
-          url: "https://graph.facebook.com/v12.0/" + phone_number_id + "/messages?access_token=" + token,
-          data: {
-              "messaging_product": "whatsapp",
-              "recipient_type": "individual",
-              "to": to,
-              "type": "template",
-              "template": {
-                  "name": "sample_check",
-                  "language": {
-                      "code": "en_US"
-                  }
-              }
-          },
-          headers: {
-              "Content-Type": "application/json"
-          },
-      });
+    await axios({
+      method: "POST",
+      url: "https://graph.facebook.com/v12.0/" + phone_number_id + "/messages?access_token=" + token,
+      data: {
+        "messaging_product": "whatsapp",
+        "recipient_type": "individual",
+        "to": to,
+        "type": "template",
+        "template": {
+          "name": "sample_check",
+          "language": {
+            "code": "en_US"
+          }
+        }
+      },
+      headers: {
+        "Content-Type": "application/json"
+      },
+    });
   } catch (e) {
-      console.error("SendTemplateMessage Error", e)
+    console.error("SendTemplateMessage Error", e)
   }
 }
 
@@ -144,7 +144,6 @@ app.post("/webhook", async (req, res) => {
   console.log("inside webhook!!!!!!!!!!!!!!!!!!!!!!!!!")
   let body = req.body;
   let msg_body, resultQuery
-
   console.log("req.body####################################", JSON.stringify(body, null, 2));
 
   if (req.body.object) {
@@ -176,9 +175,9 @@ app.post("/webhook", async (req, res) => {
           //   }]
           // )
 
-      //   
-      
-      SendTemplateMessage(from, phone_number_id)
+          //   
+
+          SendTemplateMessage(from, phone_number_id)
 
           break;
         case "interactive":
@@ -201,12 +200,45 @@ app.post("/webhook", async (req, res) => {
           )
           break;
         case "location":
-          const latitude = req.body.entry[0].changes[0].value.messages[0].location.latitude
-          const longitude = req.body.entry[0].changes[0].value.messages[0].location.longitude
-          msg_body = `${latitude},${longitude}`
-          resultQuery = await chatbot.textQuery(msg_body, from);
-          console.log('message ::::::::::::::::::::::', resultQuery.fulfillmentText)
-          SendTextMessage(from, phone_number_id, resultQuery.fulfillmentText)
+          // const lat1 = req.body.entry[0].changes[0].value.messages[0].location.latitude
+          // const long1 = req.body.entry[0].changes[0].value.messages[0].location.longitude
+          const lat1 =  9.989914657534852
+          const long1 = 76.31635282478837 
+          const lat2 = 9.98688211319266;
+          const long2 = 76.31682833077215;
+
+
+
+          function distance(lat1,lat2, lon1, lon2) {
+
+            // The math module contains a function
+            // named toRadians which converts from
+            // degrees to radians.
+            lon1 = lon1 * Math.PI / 180;
+            lon2 = lon2 * Math.PI / 180;
+            lat1 = lat1 * Math.PI / 180;
+            lat2 = lat2 * Math.PI / 180;
+
+            // Haversine formula
+            let dlon = lon2 - lon1;
+            let dlat = lat2 - lat1;
+            let a = Math.pow(Math.sin(dlat / 2), 2)
+              + Math.cos(lat1) * Math.cos(lat2)
+              * Math.pow(Math.sin(dlon / 2), 2);
+
+            let c = 2 * Math.asin(Math.sqrt(a));
+
+            // Radius of earth in kilometers. Use 3956
+            // for miles
+            let r = 6371;
+            let result = c * r
+            // calculate the result
+            console.log("result is " + result)
+            return (c * r);
+          }
+
+
+          SendTextMessage(from, phone_number_id, result)
 
 
       }
