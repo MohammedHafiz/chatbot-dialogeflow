@@ -143,7 +143,7 @@ app.post('/chat', async (req, res) => {
 app.post("/webhook", async (req, res) => {
   console.log("inside webhook!!!!!!!!!!!!!!!!!!!!!!!!!")
   let body = req.body;
-  let msg_body, resultQuery
+  let msg_body, resultQuery,result
   console.log("req.body####################################", JSON.stringify(body, null, 2));
 
   if (req.body.object) {
@@ -207,7 +207,7 @@ app.post("/webhook", async (req, res) => {
             // Radius of earth in kilometers.Use 3956
             // for mile
             let r = 6371;
-            const result = c * r
+            result = c * r
             // calculate the result
             console.log("result is " + result)
             return (c * r);
