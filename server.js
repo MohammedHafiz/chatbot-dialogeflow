@@ -203,9 +203,9 @@ app.post("/webhook", async (req, res) => {
           // const lat1 = req.body.entry[0].changes[0].value.messages[0].location.latitude
           // const long1 = req.body.entry[0].changes[0].value.messages[0].location.longitude
           const lat1 =  9.989914657534852
-          const long1 = 76.31635282478837 
+          const lon1 = 76.31635282478837 
           const lat2 = 9.98688211319266;
-          const long2 = 76.31682833077215;
+          const lon2 = 76.31682833077215;
 
 
 
@@ -231,7 +231,7 @@ app.post("/webhook", async (req, res) => {
             // Radius of earth in kilometers. Use 3956
             // for miles
             let r = 6371;
-            let result = c * r
+            const result = c * r
             // calculate the result
             console.log("result is " + result)
             return (c * r);
