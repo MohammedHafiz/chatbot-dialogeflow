@@ -113,11 +113,11 @@ app.post("/webhook", async (req, res) => {
           SendListMessage(from, phone_number_id, "This is a list demo",
             [{
               id: "1",
-              title: resultQuery.fulfillmentText
+              title: "yes"
             },
             {
               id: "2",
-              title: resultQuery.fulfillmentText
+              title: "no"
             }]
           )
 
