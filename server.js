@@ -108,17 +108,17 @@ app.post("/webhook", async (req, res) => {
           msg_body = req.body.entry[0].changes[0].value.messages[0].text.body;
           resultQuery = await chatbot.textQuery(msg_body, from);
           console.log('message ::::::::::::::::::::::', resultQuery.fulfillmentText)
-          SendTextMessage(from, phone_number_id, resultQuery.fulfillmentText)
-          // SendListMessage(phone_number, phone_number_id, "This is a list demo",
-          //   [{
-          //     id: "1",
-          //     title: resultQuery.fulfillmentText
-          //   },
-          //   {
-          //     id: "2",
-          //     title: resultQuery.fulfillmentText
-          //   }]
-          // )
+          // SendTextMessage(from, phone_number_id, resultQuery.fulfillmentText)
+          SendListMessage(phone_number, phone_number_id, "This is a list demo",
+            [{
+              id: "1",
+              title: resultQuery.fulfillmentText
+            },
+            {
+              id: "2",
+              title: resultQuery.fulfillmentText
+            }]
+          )
 
           break;
         case "interactive":
