@@ -213,19 +213,21 @@ app.post("/webhook", async (req, res) => {
             // The math module contains a function
             // named toRadians which converts from
             // degrees to radians.
-            lon1 = lon1 * Math.PI / 180;
-            lon2 = lon2 * Math.PI / 180;
-            lat1 = lat1 * Math.PI / 180;
-            lat2 = lat2 * Math.PI / 180;
+            lon1 = parseInt(lon1) * Math.PI / 180;
+            lon2 = parseInt(lon2) * Math.PI / 180;
+            lat1 = parseInt(lat1) * Math.PI / 180;
+            lat2 = parseInt(lat2) * Math.PI / 180;
 
             // Haversine formula
-            let dlon = lon2 - lon1;
-            let dlat = lat2 - lat1;
+            let dlon = parseInt(lon2) - parseInt(lon1);
+            let dlat = parseInt(lat2) - parseInt(lat1);
             let a = Math.pow(Math.sin(dlat / 2), 2)
               + Math.cos(lat1) * Math.cos(lat2)
               * Math.pow(Math.sin(dlon / 2), 2);
+              console.log("a",a)
 
             let c = 2 * Math.asin(Math.sqrt(a));
+            console.log("c",c)
 
             // Radius of earth in kilometers.Use 3956
             // for miles
