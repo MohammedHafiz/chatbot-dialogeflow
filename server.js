@@ -9,6 +9,63 @@ const token = "EAALjc2bbXNwBAG0MAo8CfzzrAK0c14C5WeEZCRO0iNeJE9DxCHpiErJhlr8jmIqN
 const axios = require("axios").default;
 
 
+const SendTextMessage = async (to, phone_number_id, body) => {
+  await axios({
+    method: "POST",
+    url: "https://graph.facebook.com/v12.0/" + phone_number_id + "/messages?access_token=" + token,
+    data: {
+      "messaging_product": "whatsapp",
+      "recipient_type": "individual",
+      "to": to,
+      "type": "text",
+      "text": {
+        "body": body
+      }
+    },
+    headers: {
+      "Content-Type": "application/json"
+    },
+  });
+}
+
+const SendListMessage = async (to, phone_number_id, body, rows) => {
+  try {
+    await axios({
+      method: "POST",
+      url: "https://graph.facebook.com/v12.0/" + phone_number_id + "/messages?access_token=" + token,
+      data: {
+        "messaging_product": "whatsapp",
+        "recipient_type": "individual",
+        "to": to,
+        "type": "interactive",
+        "interactive": {
+          "type": "list",
+          "body": {
+            "text": body
+          },
+          "action": {
+            "button": "Click here to Select",
+            "sections": [
+
+              {
+                "title": "List Item",
+                "rows": rows
+              }
+            ]
+          }
+        }
+      },
+      headers: {
+        "Content-Type": "application/json"
+      },
+    });
+  } catch (e) {
+    console.error("SendListMessage Error", e)
+  }
+}
+
+
+
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json())
 
@@ -27,68 +84,78 @@ app.post('/chat', async (req, res) => {
   res.status(200).json({ success: true, message: resultQuery.fulfillmentText })
 })
 
-// app.post("/webhook", async (req, res) => {
-//   console.log("inside webhook!!!!!!!!!!!!!!!!!!!!!!!!!")
-//   let body = req.body;
+app.post("/webhook", async (req, res) => {
+  console.log("inside webhook!!!!!!!!!!!!!!!!!!!!!!!!!")
+  let body = req.body;
+  let msg_body, resultQuery
 
-//   console.log("req.body####################################", JSON.stringify(body, null, 2));
+  console.log("req.body####################################", JSON.stringify(body, null, 2));
 
-//   if (req.body.object) {
-//     if (
-//       req.body.entry &&
-//       req.body.entry[0].changes &&
-//       req.body.entry[0].changes[0] &&
-//       req.body.entry[0].changes[0].value.messages &&
-//       req.body.entry[0].changes[0].value.messages[0]
-//     ) {
-//       let phone_number_id =
-//         req.body.entry[0].changes[0].value.metadata.phone_number_id;
-//       let from = req.body.entry[0].changes[0].value.messages[0].from; // extract the phone number from the webhook payload
-//       let msg_body = req.body.entry[0].changes[0].value.messages[0].text.body;
-//       let msg_type = req.body.entry[0].changes[0].value.messages[0].type;
+  if (req.body.object) {
+    if (
+      req.body.entry &&
+      req.body.entry[0].changes &&
+      req.body.entry[0].changes[0] &&
+      req.body.entry[0].changes[0].value.messages &&
+      req.body.entry[0].changes[0].value.messages[0]
+    ) {
+      let phone_number_id = req.body.entry[0].changes[0].value.metadata.phone_number_id;
+      let from = req.body.entry[0].changes[0].value.messages[0].from; // extract the phone number from the webhook payload
+      let msg_type = req.body.entry[0].changes[0].value.messages[0].type;
 
-//       switch (msg_type) {
-//         case "text":
-//           const resultQuery = await chatbot.textQuery(msg_body, from);
-//           console.log('message ::::::::::::::::::::::', resultQuery.fulfillmentText)
+      switch (msg_type) {
+        case "text":
+          msg_body = req.body.entry[0].changes[0].value.messages[0].text.body;
+          resultQuery = await chatbot.textQuery(msg_body, from);
+          console.log('message ::::::::::::::::::::::', resultQuery.fulfillmentText)
+          SendTextMessage(from, phone_number_id, resultQuery.fulfillmentText)
+          // SendListMessage(phone_number, phone_number_id, "This is a list demo",
+          //   [{
+          //     id: "1",
+          //     title: resultQuery.fulfillmentText
+          //   },
+          //   {
+          //     id: "2",
+          //     title: resultQuery.fulfillmentText
+          //   }]
+          // )
+
+          break;
+        case "interactive":
+          if (req.body.entry[0].changes[0].value.messages[0].interactive.list_reply) {
+            msg_body = req.body.entry[0].changes[0].value.messages[0].interactive.list_reply.title
+          } else {
+            msg_body = req.body.entry[0].changes[0].value.messages[0].interactive.button_reply.title
+          }
+          resultQuery = await chatbot.textQuery(msg_body, from);
+          console.log('message ::::::::::::::::::::::', resultQuery.fulfillmentText)
+          SendListMessage(phone_number, phone_number_id, "This is a list demo",
+            [{
+              id: "1",
+              title: resultQuery.fulfillmentText
+            },
+            {
+              id: "2",
+              title: resultQuery.fulfillmentText
+            }]
+          )
+          break;
+        case "location":
+          const latitude = req.body.entry[0].changes[0].value.messages[0].location.latitude
+          const longitude = req.body.entry[0].changes[0].value.messages[0].location.longitude
+          msg_body = `${latitude},${longitude}`
+          resultQuery = await chatbot.textQuery(msg_body, from);
+          console.log('message ::::::::::::::::::::::', resultQuery.fulfillmentText)
+          SendTextMessage(from, phone_number_id, resultQuery.fulfillmentText)
 
 
-//           axios({
-//             method: "POST",
-//             url:
-//               "https://graph.facebook.com/v12.0/" +
-//               phone_number_id +
-//               "/messages?access_token=" +
-//               token,
-//             data: {
-//               messaging_product: "whatsapp",
-//               to: from,
-//               text: { body: resultQuery.fulfillmentText },
-//             },
-//             headers: { "Content-Type": "application/json" },
-//           });
-
-//           break;
-//           case "interactive":
-//               if(req.body.entry[0].changes[0].value.messages[0].interactive.list_reply) {
-//                   msg_body = req.body.entry[0].changes[0].value.messages[0].interactive.list_reply.title
-//                   reply_id = req.body.entry[0].changes[0].value.messages[0].interactive.list_reply.id
-//               } else {
-//                   msg_body = req.body.entry[0].changes[0].value.messages[0].interactive.button_reply.title
-//                   reply_id = req.body.entry[0].changes[0].value.messages[0].interactive.button_reply.id
-//               } 
-//       }
-//       const latitude = req.body.entry[0].changes[0].value.messages[0].location.latitude
-//       const longitude = req.body.entry[0].changes[0].value.messages[0].location.longitude
-
-
-
-//     }
-//     res.sendStatus(200);
-//   } else {
-//     res.sendStatus(404);
-//   }
-// });
+      }
+    }
+    res.sendStatus(200);
+  } else {
+    res.sendStatus(404);
+  }
+});
 
 
 app.get("/webhook", (req, res) => {
