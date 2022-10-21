@@ -228,7 +228,7 @@ app.post("/webhook", async (req, res) => {
 
             let c = 2 * Math.asin(Math.sqrt(a));
 
-            // Radius of earth in kilometers. Use 3956
+            // Radius of earth in kilometers.Use 3956
             // for miles
             let r = 6371;
             const result = c * r
