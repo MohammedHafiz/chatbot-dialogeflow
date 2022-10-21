@@ -95,6 +95,33 @@ const SendButtonMessage = async (to, phone_number_id, body, buttonContent) => {
 }
 
 
+const SendTemplateMessage = async (to, phone_number_id) => {
+  try {
+      await axios({
+          method: "POST",
+          url: "https://graph.facebook.com/v12.0/" + phone_number_id + "/messages?access_token=" + token,
+          data: {
+              "messaging_product": "whatsapp",
+              "recipient_type": "individual",
+              "to": to,
+              "type": "template",
+              "template": {
+                  "name": "sample_check",
+                  "language": {
+                      "code": "en_US"
+                  }
+              }
+          },
+          headers: {
+              "Content-Type": "application/json"
+          },
+      });
+  } catch (e) {
+      console.error("SendTemplateMessage Error", e)
+  }
+}
+
+
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json())
 
@@ -149,22 +176,9 @@ app.post("/webhook", async (req, res) => {
           //   }]
           // )
 
-          SendButtonMessage(from, phone_number_id, 'Kindly submit.',
-          [{
-              "type": "reply",
-              "reply": {
-                  "id": "4.1",
-                  "title": "YES"
-              }
-          },
-          {
-              "type": "reply",
-              "reply": {
-                  "id": "4.2",
-                  "title": "NO"
-              }
-          }]
-      )
+      //   
+      
+      SendTemplateMessage(from, phone_number_id)
 
           break;
         case "interactive":
