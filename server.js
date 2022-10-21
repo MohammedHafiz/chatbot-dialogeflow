@@ -29,7 +29,7 @@ const SendTextMessage = async (to, phone_number_id, body) => {
 }
 
 const SendListMessage = async (to, phone_number_id, body, rows) => {
-  console.log("inside list message function")
+  console.log("inside list message function",to, phone_number_id, body, rows);
   try {
     await axios({
       method: "POST",
