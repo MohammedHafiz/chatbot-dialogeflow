@@ -205,11 +205,11 @@ app.post("/webhook", async (req, res) => {
 
 
 
-          function distance(lat1, lat2, lon1, lon2) {
+          function distance() {
             const lat1 = 9.989914657534852
             const lon1 = 76.31635282478837
-            const lat2 = 9.98688211319266;
-            const lon2 = 76.31682833077215;
+            const lat2 = 9.98688211319266
+            const lon2 = 76.31682833077215
 
             // The math module contains a function
             // named toRadians which converts from
