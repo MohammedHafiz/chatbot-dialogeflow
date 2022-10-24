@@ -5,7 +5,7 @@ const cors = require("cors");
 const app = express();
 const dialogflow = require('dialogflow');
 const chatbot = require('./chatbot/chatbot')
-const token = "EAALjc2bbXNwBAJvyhXJTS0xQvA7Tj2PHWsoFsJZAOagEVsOuixZAy7ZAR6GLH9OsQcyzi8wVaiLL6RIitUgrZBsp714ng9ZCXeD4kjRLvf7aI2NyzZAOi7zIJcN4yhC8kSc43ShXZCcISxpEMWJHckOMz9DhZAxXEKIvaRqgirjrlkH8IBcrUli3ddJFkroYJ7NnemscG1jefNraArEp0JQ7";
+const token = "EAALjc2bbXNwBAEz72TNG4lbSJOFJ6qfAfyafop2mZCeMHaoPZBrbGkAm6QruCp32pe6cZADN9w7NO78tozBjXL5TZAaW8Dlc8x23yPXqPMJiZAx0vrH7bgopAmwb4oIAnjKZBTg5sPbeMMUZBDpSsMHYd7MsWkPAlw1NimLTeyU61VJLYAHMZBnfLq1C2lJNfWpd2GHVhjwM0l1vrj0pkJoy";
 const axios = require("axios").default;
 
 
@@ -143,7 +143,7 @@ app.post('/chat', async (req, res) => {
 app.post("/webhook", async (req, res) => {
   console.log("inside webhook!!!!!!!!!!!!!!!!!!!!!!!!!")
   let body = req.body;
-  let msg_body, resultQuery,result
+  let msg_body, resultQuery, result
   console.log("req.body####################################", JSON.stringify(body, null, 2));
 
   if (req.body.object) {
@@ -177,43 +177,7 @@ app.post("/webhook", async (req, res) => {
 
           //   
 
-          function distance() {
-            let lat1 = 9.984775820612843
-            let lon1 = 76.31178418431229 
-            let lat2 = 9.9869613543267
-            let lon2 = 76.31677908060833
-            // The math module contains a function
-            // named toRadians which converts from
-            // degrees to radians.
-            lon1 = lon1 * Math.PI / 180;
-            lon2 = lon2 * Math.PI / 180;
-            lat1 = lat1 * Math.PI / 180;
-            lat2 = lat2 * Math.PI / 180;
 
-            console.log("lat1: " + lat1 + " lon1: " + lon1)
-            console.log("lat2: " + lat2 + " lon2: " + lon2)
-            // Haversine formula
-            let dlon = (lon2) - (lon1);
-            let dlat = (lat2) - (lat1);
-            let a = Math.pow(Math.sin(dlat / 2), 2)
-              + Math.cos(lat1) * Math.cos(lat2)
-              * Math.pow(Math.sin(dlon / 2), 2);
-            console.log("a", a)
-
-            let c = 2 * Math.asin(Math.sqrt(a));
-            console.log("c", c)
-
-            // Radius of earth in kilometers.Use 3956
-            // for mile
-            let r = 6371;
-            result = c * r
-            // calculate the result
-            console.log("result is " + result)
-            return (c * r);
-          }
-
-          const distanceFunctionCall = await distance()
-          console.log("distanceFunctionCall", distanceFunctionCall)
           SendTextMessage(from, phone_number_id, result)
 
           break;
@@ -237,50 +201,55 @@ app.post("/webhook", async (req, res) => {
           )
           break;
         case "location":
-          // const lat1 = req.body.entry[0].changes[0].value.messages[0].location.latitude
-          // const long1 = req.body.entry[0].changes[0].value.messages[0].location.longitude
+          const latitude = req.body.entry[0].changes[0].value.messages[0].location.latitude
+          const longtitude = req.body.entry[0].changes[0].value.messages[0].location.longitude
 
 
 
-          // function distance() {
-          //   const lat1 = 9.989914657534852
-          //   const lon1 = 76.31635282478837
-          //   const lat2 = 9.98688211319266
-          //   const lon2 = 76.31682833077215
+          function distance() {
+            let lat1 = 9.984775820612843
+            let lon1 = 76.31178418431229
+            let lat2 = parseInt(latitude)
+            let lon2 = parseInt(longtitude)
 
-          //   // The math module contains a function
-          //   // named toRadians which converts from
-          //   // degrees to radians.
-          //   lon1 = parseInt(lon1) * Math.PI / 180;
-          //   lon2 = parseInt(lon2) * Math.PI / 180;
-          //   lat1 = parseInt(lat1) * Math.PI / 180;
-          //   lat2 = parseInt(lat2) * Math.PI / 180;
 
-          //   console.log("lat1: " + lat1 + " lon1: " + lon1)
-          //   console.log("lat2: " + lat2 + " lon2: " + lon2)
-          //   // Haversine formula
-          //   let dlon = parseInt(lon2) - parseInt(lon1);
-          //   let dlat = parseInt(lat2) - parseInt(lat1);
-          //   let a = Math.pow(Math.sin(dlat / 2), 2)
-          //     + Math.cos(lat1) * Math.cos(lat2)
-          //     * Math.pow(Math.sin(dlon / 2), 2);
-          //   console.log("a", a)
+            lon1 = lon1 * Math.PI / 180;
+            lon2 = lon2 * Math.PI / 180;
+            lat1 = lat1 * Math.PI / 180;
+            lat2 = lat2 * Math.PI / 180;
 
-          //   let c = 2 * Math.asin(Math.sqrt(a));
-          //   console.log("c", c)
+            console.log("lat1: " + lat1 + " lon1: " + lon1)
+            console.log("lat2: " + lat2 + " lon2: " + lon2)
 
-          //   // Radius of earth in kilometers.Use 3956
-          //   // for mile
-          //   let r = 6371;
-          //   const result = c * r
-          //   // calculate the result
-          //   console.log("result is " + result)
-          //   return (c * r);
-          // }
+            // Haversine formula
+            let dlon = (lon2) - (lon1);
+            let dlat = (lat2) - (lat1);
+            let a = Math.pow(Math.sin(dlat / 2), 2)
+              + Math.cos(lat1) * Math.cos(lat2)
+              * Math.pow(Math.sin(dlon / 2), 2);
+            console.log("a", a)
 
-          // const distanceFunctionCall = await distance()
-          // console.log("distanceFunctionCall", distanceFunctionCall)
-          // SendTextMessage(from, phone_number_id, result)
+            let c = 2 * Math.asin(Math.sqrt(a));
+            console.log("c", c)
+
+
+            let r = 6371;
+            result = c * r
+            console.log("result in km " + result)
+            return (c * r);
+          }
+
+          const distanceFunctionCall = await distance()
+          if (result < 5) {
+            SendTextMessage(from, phone_number_id,
+              `Click on the link below to see all the available food items.
+
+https://restaurant-whatsapp-business-woad.vercel.app`
+            )
+          } else {
+            SendTextMessage(from, phone_number_id, "Distance is above 5km we cannot deliver the item")
+          }
+
 
 
       }
