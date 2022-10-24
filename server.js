@@ -206,12 +206,14 @@ app.post("/webhook", async (req, res) => {
         case "location":
           const latitude = req.body.entry[0].changes[0].value.messages[0].location.latitude
           const longtitude = req.body.entry[0].changes[0].value.messages[0].location.longitude
+          console.log("latitude",latitude)
+          console.log("longtitude",longtitude)
 
 
 
           function distance() {
-            let lat1 = 9.984775820612843
-            let lon1 = 76.31178418431229
+            let lat1 = 9.99011541467442 
+            let lon1 = 76.31629918060837
             let lat2 = parseInt(latitude)
             let lon2 = parseInt(longtitude)
 
