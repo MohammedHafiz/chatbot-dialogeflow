@@ -207,15 +207,17 @@ app.post("/webhook", async (req, res) => {
           const latitude = req.body.entry[0].changes[0].value.messages[0].location.latitude
           const longtitude = req.body.entry[0].changes[0].value.messages[0].location.longitude
           console.log("latitude",latitude)
+          console.log("latitude",typeof(latitude))
           console.log("longtitude",longtitude)
+          console.log("longtitude",typeof(longtitude))
 
 
 
           function distance() {
             let lat1 = 9.99011541467442 
             let lon1 = 76.31629918060837
-            let lat2 = parseInt(latitude)
-            let lon2 = parseInt(longtitude)
+            let lat2 = 9.9865586
+            let lon2 = 76.3170681
 
 
             lon1 = lon1 * Math.PI / 180;
