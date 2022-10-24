@@ -5,7 +5,7 @@ const cors = require("cors");
 const app = express();
 const dialogflow = require('dialogflow');
 const chatbot = require('./chatbot/chatbot')
-const token = "EAALjc2bbXNwBAEz72TNG4lbSJOFJ6qfAfyafop2mZCeMHaoPZBrbGkAm6QruCp32pe6cZADN9w7NO78tozBjXL5TZAaW8Dlc8x23yPXqPMJiZAx0vrH7bgopAmwb4oIAnjKZBTg5sPbeMMUZBDpSsMHYd7MsWkPAlw1NimLTeyU61VJLYAHMZBnfLq1C2lJNfWpd2GHVhjwM0l1vrj0pkJoy";
+const token = "EAALjc2bbXNwBAGL29Sb6RPCn32ZB3yEOdhlZBPoftAFg9V7CcILpZCZBQPsEyNJZC6D0XvZA7LNJqnSeNd66ideTjatbCv68i50IlsOuIWYO3kEReRFXV3mywDtZB8A0rjQZA2NPBzDKfk65tSpNEbZAfHK5Q1pV7oxaVGn3bkaf0HY3G0uSYLIbKtXcIQnGIj1w6nArGtMEILTkatEyxxlZAD";
 const axios = require("axios").default;
 
 
