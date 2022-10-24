@@ -163,8 +163,9 @@ app.post("/webhook", async (req, res) => {
       switch (msg_type) {
         case "text":
           msg_body = req.body.entry[0].changes[0].value.messages[0].text.body;
-          // resultQuery = await chatbot.textQuery(msg_body, from);
-          // console.log('message ::::::::::::::::::::::', resultQuery.fulfillmentText)
+          console.log("msg_body",msg_body)
+          resultQuery = await chatbot.textQuery(msg_body, from);
+          console.log('message ::::::::::::::::::::::', resultQuery.fulfillmentText)
           // SendTextMessage(from, phone_number_id, resultQuery.fulfillmentText)
           // SendListMessage(from, phone_number_id, "This is a list demo",
           //   [{
@@ -180,7 +181,7 @@ app.post("/webhook", async (req, res) => {
           //   
 
 
-          SendTextMessage(from, phone_number_id, result)
+          SendTextMessage(from, phone_number_id, resultQuery.fulfillmentText)
 
           break;
         case "interactive":
