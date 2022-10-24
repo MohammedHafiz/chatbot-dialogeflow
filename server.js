@@ -216,8 +216,8 @@ app.post("/webhook", async (req, res) => {
           function distance() {
             let lat1 = 9.99011541467442 
             let lon1 = 76.31629918060837
-            let lat2 = 9.9865586
-            let lon2 = 76.3170681
+            let lat2 = latitude
+            let lon2 = longtitude
 
 
             lon1 = lon1 * Math.PI / 180;
